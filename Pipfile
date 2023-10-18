@@ -11,5 +11,6 @@ psycopg2 = "*"
 python-dotenv = "*"
 alembic = "*"
 pydantic = {extras = ["email"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
 
 [dev-packages]
