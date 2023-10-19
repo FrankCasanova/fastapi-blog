@@ -1,8 +1,9 @@
-from datetime import datetime
-from sqlalchemy import Column, ForeignKey, Integer, String, DateTime, Boolean, Text
+from datetime import datetime, date
+from sqlalchemy import Column, ForeignKey, Integer, String, Boolean, Text, Date
 from sqlalchemy.orm import relationship
 
 from db.base_class import Base
+
 
 
 class Blog(Base):
@@ -12,5 +13,5 @@ class Blog(Base):
     content = Column(Text, nullable=True)
     author_id = Column(Integer, ForeignKey("user.id"))
     author = relationship("User", back_populates="blogs")
-    created_at = Column(DateTime, default=datetime.now)
+    created_at = Column(Date, default=date.today())
     is_active = Column(Boolean, default=True)
