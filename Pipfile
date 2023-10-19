@@ -10,10 +10,11 @@ sqlalchemy = "*"
 psycopg2 = "*"
 python-dotenv = "*"
 alembic = "*"
-pydantic = {extras = ["email"], version = "*"}
-passlib = {extras = ["bcrypt"], version = "*"}
 pytest = "*"
 httpx = "*"
 bump-pydantic = "*"
+pydantic = {extras = ["email"], version = "*"}
+passlib = {extras = ["bcrypt"], version = "*"}
+pre-commit = "*"
 
 [dev-packages]

@@ -1,4 +1,7 @@
-from pydantic import ConfigDict, BaseModel, EmailStr, Field
+from pydantic import BaseModel
+from pydantic import ConfigDict
+from pydantic import EmailStr
+from pydantic import Field
 
 
 class UserCreate(BaseModel):

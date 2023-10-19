@@ -15,3 +15,5 @@ passlib[bcrypt]
 #for testing
 pytest
 httpx
+
+pre-commit

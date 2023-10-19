@@ -1,8 +1,12 @@
-from sqlalchemy.orm import Session 
-from schemas.blog import CreateBlog, UpdateBlog
-from db.models.blog import Blog
-from typing import List, Optional, Dict, Union
+from typing import Dict
+from typing import List
+from typing import Optional
+from typing import Union
 
+from db.models.blog import Blog
+from schemas.blog import CreateBlog
+from schemas.blog import UpdateBlog
+from sqlalchemy.orm import Session
 
 
 def create_new_blog(blog: CreateBlog, db: Session, author_id: int = 1) -> Blog:
@@ -21,6 +25,7 @@ def create_new_blog(blog: CreateBlog, db: Session, author_id: int = 1) -> Blog:
     db.refresh(blog)
     return blog
 
+
 def update_blog(id: int, blog: UpdateBlog, author_id: int, db: Session) -> Blog:
     """
     Update a blog in the database.
@@ -34,12 +39,13 @@ def update_blog(id: int, blog: UpdateBlog, author_id: int, db: Session) -> Blog:
     """
     blog_in_db = db.query(Blog).filter(Blog.id == id).first()
     if not blog_in_db:
-        return 
+        return
     blog_in_db.title = blog.title
     blog_in_db.content = blog.content
     db.add(blog_in_db)
     db.commit()
     return blog_in_db
+
 
 def retrieve_blog(id: int, db: Session) -> Optional[Blog]:
     """
@@ -52,6 +58,7 @@ def retrieve_blog(id: int, db: Session) -> Optional[Blog]:
     """
     blog = db.query(Blog).filter(Blog.id == id).first()
     return blog
+
 
 def delete_blog(id: int, author_id: int, db: Session) -> Dict[str, Union[str, int]]:
     """
@@ -81,5 +88,5 @@ def list_blogs(db: Session) -> List[Blog]:
     Returns:
         List[Blog]: A list of active blogs.
     """
-    blogs: List[Blog] = db.query(Blog).filter(Blog.is_active==True).all()
+    blogs: List[Blog] = db.query(Blog).filter(Blog.is_active == True).all()
     return blogs
