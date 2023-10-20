@@ -97,3 +97,8 @@ def list_blogs(db: Session) -> List[Blog]:
     """
     blogs: List[Blog] = db.query(Blog).filter(Blog.is_active == True).all()
     return blogs
+
+
+def search_blog(query: str, db: Session):
+    blogs = db.query(Blog).filter(Blog.title.contains(query)).all()
+    return blogs

@@ -1,3 +1,4 @@
+from typing import List
 from typing import Optional
 
 from apis.v1.route_login import get_current_user
@@ -5,6 +6,7 @@ from db.repository.blog import create_new_blog
 from db.repository.blog import delete_blog
 from db.repository.blog import list_blogs
 from db.repository.blog import retrieve_blog
+from db.repository.blog import search_blog
 from db.session import get_db
 from fastapi import APIRouter
 from fastapi import Depends
@@ -15,6 +17,7 @@ from fastapi import status
 from fastapi.security.utils import get_authorization_scheme_param
 from fastapi.templating import Jinja2Templates
 from schemas.blog import CreateBlog
+from schemas.blog import ShowBlog
 from sqlalchemy.orm import Session
 
 
@@ -86,3 +89,22 @@ def delete_a_blog(request: Request, id: int, db: Session = Depends(get_db)):
             "blog/detail.html",
             {"request": request, "alert": "Please Login Again", "blog": blog},
         )
+
+
+@router.get("/search")
+def search(
+    request: Request, db: Session = Depends(get_db), query: Optional[str] = None
+) -> List[ShowBlog]:
+    """
+    Search blogs in the database based on the query.
+    Args:
+        request (Request): The HTTP request object.
+        db (Session, optional): The database session. Defaults to Depends(get_db).
+        query (str, optional): The search query. Defaults to None.
+    Returns:
+        List[Blog]: The list of blogs that match the search query.
+    """
+    blogs = search_blog(query, db=db)
+    return templates.TemplateResponse(
+        "blog/home.html", {"request": request, "blogs": blogs}
+    )
