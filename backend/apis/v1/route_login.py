@@ -33,6 +33,7 @@ def authenticate_user(email: str, password: str, db: Session) -> Optional[User]:
     return user
 
 
+@router.post("/token", response_model=Token)
 def login_for_access_token(
     form_data: OAuth2PasswordRequestForm = Depends(), db: Session = Depends(get_db)
 ) -> Token:
