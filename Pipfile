@@ -16,6 +16,8 @@ bump-pydantic = "*"
 pre-commit = "*"
 python-jose = "*"
 python-multipart = "*"
+jinja = "*"
+jinja2 = "*"
 pydantic = {extras = ["email"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
 

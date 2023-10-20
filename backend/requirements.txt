@@ -20,3 +20,6 @@ pytest
 httpx
 
 pre-commit
+
+#templates
+Jinja2
