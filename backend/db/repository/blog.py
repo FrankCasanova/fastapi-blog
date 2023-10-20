@@ -26,23 +26,28 @@ def create_new_blog(blog: CreateBlog, db: Session, author_id: int = 1) -> Blog:
     return blog
 
 
-def update_blog(id: int, blog: UpdateBlog, author_id: int, db: Session) -> Blog:
+def update_blog(
+    id: int, blog: UpdateBlog, author_id: int, db: Session
+) -> Dict[str, str]:
     """
     Update a blog in the database.
     Args:
-        id (int): The ID of the blog to update.
+        id (int): The id of the blog to update.
         blog (UpdateBlog): The updated blog data.
-        author_id (int): The ID of the author.
+        author_id (int): The id of the author.
         db (Session): The database session.
     Returns:
-        Blog: The updated blog.
+        Dict[str, str]: A dictionary with the updated blog data.
+    Raises:
+        KeyError: If the blog with the given id does not exist.
+        KeyError: If the author is not the owner of the blog.
     """
-    blog_in_db = db.query(Blog).filter(Blog.id == id).first()
+    blog_in_db = db.query(Blog).get(id)
     if not blog_in_db:
-        return
-    blog_in_db.title = blog.title
-    blog_in_db.content = blog.content
-    db.add(blog_in_db)
+        raise KeyError(f"Blog with id {id} does not exist")
+    if blog_in_db.author_id != author_id:
+        raise KeyError("Only the author can modify the blog")
+    blog_in_db.title, blog_in_db.content = blog.title, blog.content
     db.commit()
     return blog_in_db
 
@@ -60,22 +65,24 @@ def retrieve_blog(id: int, db: Session) -> Optional[Blog]:
     return blog
 
 
-def delete_blog(id: int, author_id: int, db: Session) -> Dict[str, Union[str, int]]:
+def delete_blog(id: int, author_id: int, db: Session) -> Union[dict, None]:
     """
     Delete a blog from the database.
-    Args:
-        id (int): The ID of the blog to be deleted.
-        author_id (int): The ID of the author of the blog.
-        db (Session): The database session object.
+
+    Parameters:
+    id (int): The ID of the blog to be deleted.
+    author_id (int): The ID of the author deleting the blog.
+    db (Session): The database session.
+
     Returns:
-        Dict[str, Union[str, int]]: A dictionary containing the result of the deletion operation.
-            If the blog is not found, the dictionary will contain an "error" key with an error message.
-            Otherwise, the dictionary will contain a "msg" key with a success message and the ID of the deleted blog.
+    Union[dict, None]: A dictionary with a success or error message, or None if the blog was not found.
     """
-    blog_in_db = db.query(Blog).filter(Blog.id == id)
-    if not blog_in_db.first():
+    blog_in_db = db.query(Blog).filter(Blog.id == id).first()
+    if not blog_in_db:
         return {"error": f"Could not find blog with id {id}"}
-    blog_in_db.delete()
+    if blog_in_db.author_id != author_id:
+        return {"error": "Only the author can delete a blog"}
+    db.delete(blog_in_db)
     db.commit()
     return {"msg": f"deleted blog with id {id}"}
 

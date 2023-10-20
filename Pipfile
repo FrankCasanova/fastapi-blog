@@ -13,8 +13,10 @@ alembic = "*"
 pytest = "*"
 httpx = "*"
 bump-pydantic = "*"
+pre-commit = "*"
+python-jose = "*"
+python-multipart = "*"
 pydantic = {extras = ["email"], version = "*"}
 passlib = {extras = ["bcrypt"], version = "*"}
-pre-commit = "*"
 
 [dev-packages]
