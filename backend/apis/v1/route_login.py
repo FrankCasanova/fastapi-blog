@@ -1,5 +1,6 @@
 from typing import Optional
 
+from core.config import settings
 from core.hashing import Hasher
 from core.security import create_access_token
 from db.models.user import User
@@ -11,6 +12,8 @@ from fastapi import HTTPException
 from fastapi import status
 from fastapi.security import OAuth2PasswordBearer
 from fastapi.security import OAuth2PasswordRequestForm
+from jose import jwt
+from jose import JWTError
 from schemas.token import Token
 from sqlalchemy.orm import Session
 
@@ -70,14 +73,16 @@ def get_current_user(
         Optional[User]: The current user, if authenticated. None otherwise.
     """
     try:
-        payload = decode(token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM])
+        payload = jwt.decode(
+            token, settings.SECRET_KEY, algorithms=[settings.ALGORITHM]
+        )
         username: str = payload.get("sub")
         if not username:
             raise HTTPException(
                 status_code=status.HTTP_401_UNAUTHORIZED,
                 detail="Could not validate credentials",
             )
-    except DecodeError:
+    except JWTError:
         raise HTTPException(
             status_code=status.HTTP_401_UNAUTHORIZED,
             detail="Could not validate credentials",
