@@ -16,7 +16,7 @@ from pydantic.error_wrappers import ValidationError
 from schemas.user import UserCreate
 from sqlalchemy.orm import Session
 
-templates = Jinja2Templates(directory="backend/templates")
+templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 

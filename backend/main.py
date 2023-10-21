@@ -17,7 +17,7 @@ def create_tables():
 
 
 def configure_staticfiles(app):
-    app.mount("/static", StaticFiles(directory="backend/static"), name="static")
+    app.mount("/static", StaticFiles(directory="static"), name="static")
 
 
 def start_application():

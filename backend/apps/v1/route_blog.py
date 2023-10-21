@@ -21,7 +21,7 @@ from schemas.blog import ShowBlog
 from sqlalchemy.orm import Session
 
 
-templates = Jinja2Templates(directory="backend/templates")
+templates = Jinja2Templates(directory="templates")
 router = APIRouter()
 
 
