@@ -108,3 +108,12 @@ def search(
     return templates.TemplateResponse(
         "blog/home.html", {"request": request, "blogs": blogs}
     )
+
+
+@router.get("/autocomplete")
+def autocomplete(term: Optional[str] = None, db: Session = Depends(get_db)):
+    blogs = search_blog(term, db=db)
+    blog_titles = []
+    for blog in blogs:
+        blog_titles.append(blog.title)
+    return blog_titles

@@ -29,9 +29,22 @@
         </li>
       </ul>
       <form class="d-flex" role="search" action="/search">
-        <input class="form-control me-2" name="query" type="search" placeholder="Search" aria-label="Search">
+        <input class="form-control me-2" id="autocomplete" name="query" type="search" placeholder="Search" aria-label="Search">
         <button class="btn btn-outline-success" type="submit">Search</button>
       </form>
     </div>
   </div>
 </nav>
+<script>
+  // Make a request to the backend to get the current user's information
+  fetch('/me')
+    .then(response => response.json())
+    .then(data => {
+      // Update the navbar with the user's name
+      const userName = data.email;
+      const userNavItem = document.createElement('li');
+      userNavItem.classList.add('nav-item');
+      userNavItem.innerHTML = `<a class="nav-link text-white bg-dark" href="#">${userName}</a>`;
+      document.querySelector('.nav-item').appendChild(userNavItem);
+    });
+</script>
