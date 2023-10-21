@@ -2,6 +2,7 @@ import json
 
 from apis.v1.route_login import authenticate_user
 from core.security import create_access_token
+from db.repository.login import get_user
 from db.repository.user import create_new_user
 from db.session import get_db
 from fastapi import APIRouter
